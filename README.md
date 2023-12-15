@@ -9,6 +9,7 @@ This repo shows Confluent Data Contracts in action, following the instructions d
 - Docker (latest versions bundled with former Docker Compose)
 - kafka-avro-console-producer CLI
 - kafka-avro-console-consumer CLI
+- jq CLI for some formatting
 
 
 ## Start the environment
