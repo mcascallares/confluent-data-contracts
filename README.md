@@ -1,7 +1,7 @@
 # Confluent Data Contracts
 
-This repo shows Confluent Data Contracts in action, following the instruction detailed in 
-(this blog post)[https://www.confluent.io/en-gb/blog/data-contracts-confluent-schema-registry/]
+This repo shows Confluent Data Contracts in action, following the instructions detailed in 
+[this blog post](https://www.confluent.io/en-gb/blog/data-contracts-confluent-schema-registry/)
 
 
 ## Requirements
