@@ -1,0 +1,72 @@
+---
+version: '3.9'
+services:
+  zookeeper:
+    hostname: zookeeper
+    image: confluentinc/cp-zookeeper:${TAG}
+    ports:
+      - '32181:32181'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 32181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: WARN
+    healthcheck:
+      interval: 10s
+      retries: 25
+      test: echo srvr | nc zookeeper 32181 || exit 1
+      
+  kafka-1:
+    hostname: kafka-1
+    image: confluentinc/cp-server:${TAG}
+    ports:
+      - '10092:10092'
+      - '9101:9101'
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:32181
+      # INTERNAL for interbroker, IN_DOCKER for clients inside Docker, OUT_DOCKER for access from Mac
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-1:29092, IN_DOCKER://kafka-1:9092, OUT_DOCKER://localhost:10092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT, IN_DOCKER:PLAINTEXT, OUT_DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+      KAFKA_LOG4J_LOGGERS: kafka.controller=INFO,kafka.request=INFO
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: WARN
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      # only for cp-server
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1 # license config
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1 # Self-balancing cluster
+      KAFKA_SCHEMA_REGISTRY_URL: http://schema-registry:8081 # Broker side validation
+    healthcheck:
+      test: kafka-broker-api-versions --bootstrap-server localhost:9092
+      interval: 10s
+      retries: 25
+      start_period: 20s
+
+  schema-registry:
+    hostname: schema-registry
+    image: confluentinc/cp-schema-registry:${TAG}
+    ports:
+      - 8081:8081
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka-1:9092
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: INFO
+      # only for cp-server
+      # Data Contracts, started in 7.4
+      SCHEMA_REGISTRY_RESOURCE_EXTENSION_CLASS: io.confluent.kafka.schemaregistry.rulehandler.RuleSetResourceExtension
+    healthcheck:
+      interval: 30s
+      retries: 20
+      test: curl http://localhost:8081/ --output /dev/null || exit 1
