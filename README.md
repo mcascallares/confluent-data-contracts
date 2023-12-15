@@ -68,3 +68,9 @@ kafka-avro-console-producer \
   --broker-list localhost:9092 \
   --property value.schema.id=3
 ```
+
+## Shutdown and destroy the environment
+
+```
+docker compose down -v
+```
