@@ -1,0 +1,14 @@
+{
+  "ruleSet": {
+    "domainRules": [
+      {
+        "name": "checkTotalPrice",
+        "kind": "CONDITION",
+        "type": "CEL",
+        "mode": "WRITE",
+        "expr": "message.totalPriceCents > 0",
+        "disabled": true
+      }
+    ]
+  }
+}
