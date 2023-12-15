@@ -69,6 +69,13 @@ kafka-avro-console-producer \
   --property value.schema.id=3
 ```
 
+## Disabling a rule
+
+```
+curl http://localhost:8081/subjects/orders-value/versions \
+  --json @order_ruleset_disabled.json
+```
+
 ## Shutdown and destroy the environment
 
 ```
