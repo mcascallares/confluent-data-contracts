@@ -67,6 +67,7 @@ kafka-avro-console-producer \
   --topic orders \
   --broker-list localhost:9092 \
   --property value.schema.id=3
+{"orderId": 1, "customerId": 2, "totalPriceCents": 12000, "state": "Pending", "timestamp": 1693591356 }
 ```
 
 ## Disabling a rule
