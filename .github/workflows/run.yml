@@ -17,4 +17,4 @@ jobs:
         with:
           compose-file: |
             docker-compose.yml
-            test/docker-compose.ci.yml
+            docker-compose.ci.yml
