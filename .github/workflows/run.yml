@@ -19,4 +19,4 @@ jobs:
             docker-compose.ci.yml
           down-flags: "--volumes"
           test-container: tester
-          test-command: run.sh
+          test-command: /run.sh
