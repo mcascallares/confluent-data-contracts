@@ -29,21 +29,25 @@ docker compose logs -f
 
 ```
 jq -n --rawfile schema order.avsc '{schema: $schema}' | 
-  curl http://localhost:8081/subjects/orders-value/versions --json @-
+  curl http://localhost:8081/subjects/orders-value/versions \
+  --header "Content-Type: application/json" --header "Accept: application/json" \
+  --data @-
 ```
 
 ## Enhancing the data contract with metadata
 
 ```
 curl http://localhost:8081/subjects/orders-value/versions \
-  --json @order_metadata.json
+  --header "Content-Type: application/json" --header "Accept: application/json" \
+  --data "@order_metadata.json"
 ```
 
 ## Adding data quality rules to the data contract
 
 ```
 curl http://localhost:8081/subjects/orders-value/versions \
-  --json @order_ruleset.json
+  --header "Content-Type: application/json" --header "Accept: application/json" \
+  --data @order_ruleset.json
 ```
 
 ## Client applications
@@ -74,6 +78,7 @@ kafka-avro-console-producer \
 
 ```
 curl http://localhost:8081/subjects/orders-value/versions \
+  --header "Content-Type: application/json" --header "Accept: application/json" \
   --json @order_ruleset_disabled.json
 ```
 
