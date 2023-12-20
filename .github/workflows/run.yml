@@ -29,7 +29,7 @@ jobs:
         run: docker compose up -d
 
       - name: Register a plain vanilla schema
-        run: jq -n --rawfile schema order.avsc '{schema: $schema}' | curl http://localhost:8081/subjects/orders-value/versions --json @-
+        run: "jq -n --rawfile schema order.avsc '{schema: $schema}' | curl http://localhost:8081/subjects/orders-value/versions --json @-"
         
       - name: Detroy Docker containers
         run: docker compose down -v
