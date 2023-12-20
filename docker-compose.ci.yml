@@ -1,0 +1,14 @@
+---
+version: '3.9'
+services:
+  tester:
+    hostname: tester
+    image: confluentinc/cp-schema-registry:${TAG}
+    volumes:
+      - ./run.sh:/run.sh
+    # does not start Schema Registry, just use the container
+    entrypoint: /bin/sh 
+    command: "echo 'Tester Container Started'"
+    depends_on:
+      schema-registry:
+        condition: service_healthy
