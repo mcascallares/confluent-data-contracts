@@ -29,13 +29,13 @@ jobs:
         run: docker compose up -d
 
       - name: Register a plain vanilla schema
-        run: "jq -n --rawfile schema order.avsc '{schema: $schema}' | curl -s http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @-"
+        run: "jq -n --rawfile schema order.avsc '{schema: $schema}' | curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @-"
       
       - name: Enhancing the data contract with metadata
-        run: "curl -s http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_metadata.json"
+        run: "curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_metadata.json"
 
       - name: Adding data quality rules to the data contract
-        run: "curl -s http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_ruleset.json"
+        run: "curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_ruleset.json"
 
       - name: Detroy Docker containers
         run: docker compose down -v
