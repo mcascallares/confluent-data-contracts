@@ -1,6 +1,5 @@
-# Confluent Data Contracts
-
 [![CI](https://github.com/mcascallares/confluent-data-contracts/actions/workflows/run.yml/badge.svg)](https://github.com/mcascallares/confluent-data-contracts/actions/workflows/run.yml)
+# Confluent Data Contracts
 
 This repo shows Confluent Data Contracts in action, following the instructions detailed in 
 [this blog post](https://www.confluent.io/en-gb/blog/data-contracts-confluent-schema-registry/)
