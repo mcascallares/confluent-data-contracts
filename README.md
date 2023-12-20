@@ -50,6 +50,16 @@ curl -s http://localhost:8081/subjects/orders-value/versions \
   --data @order_ruleset.json
 ```
 
+
+## Disabling a rule
+
+```
+curl -s http://localhost:8081/subjects/orders-value/versions \
+  --header "Content-Type: application/json" --header "Accept: application/json" \
+  --data @order_ruleset_disabled.json
+```
+
+
 ## Client applications
 
 From the output, of the previous commands, we capture the ID of the schema we want to use.
@@ -72,14 +82,6 @@ kafka-avro-console-producer \
   --broker-list localhost:9092 \
   --property value.schema.id=3
 {"orderId": 1, "customerId": 2, "totalPriceCents": 12000, "state": "Pending", "timestamp": 1693591356 }
-```
-
-## Disabling a rule
-
-```
-curl -s http://localhost:8081/subjects/orders-value/versions \
-  --header "Content-Type: application/json" --header "Accept: application/json" \
-  --data @order_ruleset_disabled.json
 ```
 
 ## Shutdown and destroy the environment

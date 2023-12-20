@@ -9,21 +9,12 @@ on:
 
 jobs:
   build:
-    runs-on: composite
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-
-      - name: Launch Docker containers
-        run: docker compose up -d
-
-      - name: Register a plain vanilla schema
-        run:  "jq -n --rawfile schema order.avsc '{schema: $schema}' | curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @-"
-      
-      - name: Enhancing the data contract with metadata
-        run: "curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_metadata.json"
-
-      - name: Adding data quality rules to the data contract
-        run: "curl http://localhost:8081/subjects/orders-value/versions --header 'Content-Type: application/json' --header 'Accept: application/json' --data @order_ruleset.json"
-
-      - name: Detroy Docker containers
-        run: docker compose down -v
+      - uses: adambirds/docker-compose-action@v1.3.0
+    with:
+      compose-file: "docker-compose.yml"
+      down-flags: "--volumes"
+      test-container: schema-registry
+      test-command: run.sh
