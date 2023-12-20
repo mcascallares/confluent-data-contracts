@@ -1,9 +1,0 @@
----
-version: '3.9'
-services:
-  tester:
-    hostname: tester
-    depends_on:
-      schema-registry:
-        condition: service_healthy
-    build: ./
