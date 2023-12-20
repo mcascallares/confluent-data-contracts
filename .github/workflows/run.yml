@@ -18,3 +18,5 @@ jobs:
           compose-file: |
             docker-compose.yml
             docker-compose.ci.yml
+          test-container: tester
+          test-command: "/entrypoint.sh"
